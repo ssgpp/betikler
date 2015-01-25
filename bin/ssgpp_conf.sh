@@ -34,7 +34,7 @@ EMAIL_ENCRYPTION=TLS
 
 
 ###############################################
-# 4. (istege bagli) bir mesaji arguman olarak alan bir uyari komutu. orn. notify-send (Linux/GNOME ile kurulu geliyor.)
+# 5. (istege bagli) bir mesaji arguman olarak alan bir uyari komutu. orn. notify-send (Linux/GNOME ile kurulu geliyor.)
 UYARMA_PROGRAMI=
 
 

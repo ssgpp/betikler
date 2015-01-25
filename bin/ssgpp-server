@@ -31,28 +31,11 @@ fi
 ###############################################
 
 ###############################################
-# ssg++ cli calisma alani
-#cd ~/kulucka/ssgpp_workspace 
+# ssg++ web calisma alani
 mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_web_workspace"
 cd "$SSGPP_SCRIPTS_DIR/../ssgpp_web_workspace"
 
 ###############################################
 
-# if [ -z "$JAVACMD" ] ; then
-#     if [ -n "$JAVA_HOME"  ] ; then
-# 	JAVACMD="$JAVA_HOME/bin/java"
-#     else
-# 	JAVACMD="`which java`"
-#     fi
-# fi
-# # Might fail if $0 is a link
-# SSGPP_HOME=`dirname "$0"`/..
-# $JAVACMD -Xmx1024m -jar $SSGPP_HOME/ssgpp-web-1.0-SNAPSHOT.jar $@
-
-# ARTIK DOGRU DEGIL:dtd'leri indirmemek icin cd onemli.
-#cd /home/onur/kulucka/java_workspace/ssgpp.git/
-#java -cp $SSGPP_JAR net.sf.ssgpp.webui.WebServer $1
-#cd /shared/gezgin/kulucka/ssgpp_workspace/ssgpp-web-workspace
-#java -jar target/ssgpp-web-1.0-SNAPSHOT.war
 "$JAVA" -jar $SSGPP_WEB_JAR
 

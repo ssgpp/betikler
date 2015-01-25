@@ -40,7 +40,6 @@ DOSYA=farkbadi-$TARIH
 
 ###############################################
 # ssg++ cli calisma alani
-#cd ~/kulucka/ssgpp_workspace 
 mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 
@@ -60,11 +59,9 @@ if [ -f $DOSYA.mobi ]; then
    if [ "$1" != "test" ]; then    
 	echo "mobi dosyasını gönderiyor..."
 	$SSGPP_SCRIPTS_DIR/send-file.sh $DOSYA.mobi $KINDLE_EMAIL
-# for tests	
-#		mv $DOSYA.mobi $DOSYA-sentToKindle.mobi
-# 1- mobi dosyasini /shared/gezgin/kulucka/ssgpp_workspace/arsiv/badiler/mobi altina tasi.
+# mobi dosyasini /shared/gezgin/kulucka/ssgpp_workspace/arsiv/badiler/mobi altina tasi.
 	mv $DOSYA-sentToKindle.mobi arsiv/badiler/mobi/
-# 2- html ve resimleri /shared/gezgin/kulucka/ssgpp_workspace/arsiv/badiler/html altina tasi.
+	# html ve resimleri /shared/gezgin/kulucka/ssgpp_workspace/arsiv/badiler/html altina tasi.
 	#mv $DOSYA.htm arsiv/badiler/html/
 	#mv cache/* arsiv/badiler/html/cache/
 	rm $DOSYA.htm	

@@ -37,7 +37,6 @@ fi
 
 ###############################################
 # ssg++ cli calisma alani
-#cd ~/kulucka/ssgpp_workspace 
 mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 

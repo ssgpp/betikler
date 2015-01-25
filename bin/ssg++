@@ -2,6 +2,9 @@
 ###############################################
 # ssg++ komut satiri arayuzu programi
 #
+# Argumanlari:
+# - komut (orn. ssg++ bugün, ssg++ yürüt başlıkknk [başlık=sözlükçülerin en iyi 10 dizi listesi] ! başlıkgirdileri ! girdibkzları ! histogram ! grafikbtk
+#
 # author: oderin at users sourceforge net
 ###############################################
 
@@ -30,7 +33,7 @@ fi
 ###############################################
 
 ###############################################
-# ssg++ cli calisma alani
+# ssg++ cli calisma alaninda calismasina gerek yok.
 #mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 #cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 ###############################################

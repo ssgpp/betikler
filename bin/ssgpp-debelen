@@ -1,8 +1,8 @@
 #!/bin/bash
 ###############################################
-# ssgpp_debe_to_kindle.sh betigini cron ile kullanabilmek icin bir wrapper.
+# ssgpp-debe-to-kindle.sh betigini cron ile kullanabilmek icin bir wrapper.
 # online debe ile gonderilmis debe'yi kiyaslayarak gonderiyor ya da gondermiyor.
-# ssgpp_debe_to_kindle.sh eksi sozluk'teki dunun en begenilen entry'lerini mobi yapip kindle'a gonderir.
+# ssgpp-debe-to-kindle.sh eksi sozluk'teki dunun en begenilen entry'lerini mobi yapip kindle'a gonderir.
 # 
 # cron ile kullanmak icin:
 #    # 15 dk'da bir (xx:00, xx:15, xx:30, xx:45'lerde) gondermeye calis. Zaten gonderilmisse birsey yapmadan cikar.
@@ -51,7 +51,6 @@ DOSYA=debe-$TARIH
 
 ###############################################
 # ssg++ cli calisma alani
-#cd ~/kulucka/ssgpp_workspace 
 mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 
@@ -114,7 +113,7 @@ debe_scheduled_action() {
     if [ $? -eq 1 ]; then
 	echo "debe olusturulup gonderilecek..."
 	source $SSGPP_SCRIPTS_DIR/ssgpp-debe-to-kindle.sh "$@" # test
-	# bu txt olusturma isi ssgpp_debe_to_kindle-v2.sh tarafindan gonderme yapildiktan sonra yapiliyor. 
+	# bu txt olusturma isi ssgpp-debe-to-kindle.sh tarafindan gonderme yapildiktan sonra yapiliyor. 
 	# mv online-debe.txt son-gonderilmis-debe.txt
 	if [ -n "$UYARMA_PROGRAMI" ]; then
 		$UYARMA_PROGRAMI "Günün debe'si gönderildi."
@@ -130,3 +129,4 @@ debe_scheduled_action() {
 
 # main
 debe_scheduled_action "$@"
+

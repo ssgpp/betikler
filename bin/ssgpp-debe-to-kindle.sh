@@ -47,7 +47,6 @@ DOSYA=debe-$TARIH
 
 ###############################################
 # ssg++ cli calisma alani
-#cd ~/kulucka/ssgpp_workspace 
 mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 
@@ -64,9 +63,6 @@ fi
 
 
 if [ -f $DOSYA.htm ]; then
-# Calibre ile eski yontem
-#    ebook-convert $DOSYA.htm $DOSYA.mobi --authors "ssg++ [http://ssgpp.sourceforge.net]" --publisher "ek\$i sözlük [http://www.eksisozluk.com]" --title "$TARIH - Dünün en beğenilen entry'leri" --language tr --level1-toc '//*[@class="title"]' --level2-toc '//*[@class="aul"]'
-
 # generate mobi with amazon's KindleGen
 # first create debe-$TARIH.opf file that contains the mobi metadata
     "$JAVA" -cp $SSGPP_JAR net.sf.ssgpp.console.OpfGeneratorMain #lib/debe.template.opf
