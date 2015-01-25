@@ -8,12 +8,12 @@
 # ilk uyanmayi elle asagidaki komutu calistirarak yapmak gerekiyor. (her reboot'tan sonra gerekli.)
 # sudo rtcwake -m no -l -t $(date +%s -d 'tomorrow 05:58')
 #
-# bilgisayar uyandiginda baska bir cron job'u olarak 06:00'da calistirilan debelen betiginin
+# bilgisayar uyandiginda baska bir cron job'u olarak 06:00'da calistirilan ssgpp-mobi-debe betiginin
 # mobi dosyasini uretmesini bekliyor. 
 # uretildiginde sonraki gun icin uyanma alarmini kurup uyuyor.
 #
-# sabah uyanik kalma suresi degisebilir. debelen her ceyrek saatte calistirilan bir betik.
-# debe henuz yayinlanmamissa debelen betigi mobi'yi gonderene kadar bilgisayar uyanik kalir.
+# sabah uyanik kalma suresi degisebilir. ssgpp-mobi-debe her ceyrek saatte calistirilan bir betik.
+# debe henuz yayinlanmamissa ssgpp-mobi-debe betigi mobi'yi gonderene kadar bilgisayar uyanik kalir.
 #
 # kurulu uyanma alarmini gormek icin: sudo rtcwake -m show 
 #

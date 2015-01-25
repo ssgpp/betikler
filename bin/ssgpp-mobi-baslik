@@ -1,13 +1,16 @@
 #!/bin/bash
-#
 ###############################################
-# Argumanlar: yok
+# Verilen başlığın girdilerinden mobi oluşturup kindle'a gönderir.
+#
+# Argumanlar:
+# - başlık, orn. ssgpp-mobi-baslik javascript\'in ilkokullarda zorunlu ders olması
 # 
 # Gereksinimler:
 # - ebook-convert (calibre ile gelen bir komut satiri programi)
 # - ssgpp_conf.sh dosyasindaki 
 #   - e-mail gondermekle ilgili degiskenler (EMAIL_*), 
 #   - ssg++ komut satiri arayuzu (SSGPP_JAR) ve onun yapilandirilmasi (~/.ssgpp/conf/app.properties)
+# - sed, iconv, tr (bash ortaminda bulunan standard programlar)
 #
 # author: oderin at users sourceforge net
 ###############################################
@@ -36,44 +39,46 @@ fi
 ###############################################
 
 TARIH=`date +%Y-%m-%d`
-DOSYA=farkbadi-$TARIH
+
+# ascii baslik
+asciibaslik=$(echo $@ | sed 's/ /_/g' | iconv -f utf-8 -t us-ascii//translit |  tr -cd '[[:alnum:]]._-')
+DOSYA=$asciibaslik-$TARIH
 
 ###############################################
 # ssg++ cli calisma alani
 mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
 
-# badi dosyalarinin arsivlenme alani
-mkdir -p arsiv/badiler/mobi
-#mkdir -p arsiv/badiler/html
-#mkdir -p arsiv/badiler/html/cache
+# baslik dosyalarinin arsivlenme alani
+mkdir -p "arsiv/basliklar/$asciibaslik/mobi"
+mkdir -p "arsiv/basliklar/$asciibaslik/html"
 ###############################################
 
-"$JAVA" -cp $SSGPP_JAR net.sf.ssgpp.console.Shell -l yürüt başlıkfarkknk [tip=badi, dosya="$SSGPP_SCRIPTS_DIR/../ssgpp_web_workspace/cache/checkpoint-badi.xml"] ! başlıkgirdileri ! dosyabtk [dosya=$DOSYA.htm]
+if [ ! -f $DOSYA.html ]; then
+	"$JAVA" -cp $SSGPP_JAR net.sf.ssgpp.console.Shell -l başlıkindir $@, $DOSYA.html
+fi
 
-if [ -f $DOSYA.htm ]; then
-    ebook-convert $DOSYA.htm $DOSYA.mobi
+if [ -f $DOSYA.html ]; then
+    ebook-convert $DOSYA.html $DOSYA.mobi
 fi
 
 if [ -f $DOSYA.mobi ]; then
-   if [ "$1" != "test" ]; then    
+#   if [ "$1" != "test" ]; then    
 	echo "mobi dosyasını gönderiyor..."
 	$SSGPP_SCRIPTS_DIR/send-file.sh $DOSYA.mobi $KINDLE_EMAIL
-# mobi dosyasini /shared/gezgin/kulucka/ssgpp_workspace/arsiv/badiler/mobi altina tasi.
-	mv $DOSYA-sentToKindle.mobi arsiv/badiler/mobi/
-	# html ve resimleri /shared/gezgin/kulucka/ssgpp_workspace/arsiv/badiler/html altina tasi.
-	#mv $DOSYA.htm arsiv/badiler/html/
-	#mv cache/* arsiv/badiler/html/cache/
-	rm $DOSYA.htm	
-	rm -rf cache
+	# mobi dosyasini arsiv/badiler/mobi altina tasi.
+	mv $DOSYA-sentToKindle.mobi "arsiv/basliklar/$asciibaslik/mobi/"
+	# html ve resimleri "arsiv/basliklar/$asciibaslik/html/" altina tasi.
+	mv $DOSYA.html cache "arsiv/basliklar/$asciibaslik/html/"
+	#rm -rf $DOSYA.html cache
 
 	if [ -n "$UYARMA_PROGRAMI" ]; then
-		$UYARMA_PROGRAMI "badi fark mobi'si gönderildi."
+		$UYARMA_PROGRAMI "başlık mobi'si gönderildi."
 	fi
-	echo "badi fark mobi'si gönderildi."
-   else
-        echo "mobi dosyası oluşturuldu, gönderilmedi."
-   fi
+	echo "başlık mobi'si gönderildi."
+#   else
+#        echo "mobi dosyası oluşturuldu, gönderilmedi."
+#   fi
 else
    echo 'HATA: mobi oluşturulurken bir hata oluştu!'
 fi

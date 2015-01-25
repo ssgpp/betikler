@@ -1,0 +1,81 @@
+#!/bin/bash
+###############################################
+# Badilerin henüz okumadığınız girdilerinden mobi oluşturup kindle'a gönderir.
+#
+# Argumanlar: yok
+# 
+# Gereksinimler:
+# - ebook-convert (calibre ile gelen bir komut satiri programi)
+# - ssgpp_conf.sh dosyasindaki 
+#   - e-mail gondermekle ilgili degiskenler (EMAIL_*), 
+#   - ssg++ komut satiri arayuzu (SSGPP_JAR) ve onun yapilandirilmasi (~/.ssgpp/conf/app.properties)
+#
+# author: oderin at users sourceforge net
+###############################################
+
+###############################################
+# ssg++ betiklerinin oldugu klasoru bul
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+SSGPP_SCRIPTS_DIR="$DIR"
+#echo 'SSGPP_SCRIPTS_DIR:' $SSGPP_SCRIPTS_DIR
+###############################################
+
+###############################################
+# yapilandirma dosyasini oku.
+if [ -f ~/.ssgpp/conf/ssgpp_conf.sh ]; then
+	source ~/.ssgpp/conf/ssgpp_conf.sh
+else
+	source $SSGPP_SCRIPTS_DIR/ssgpp_conf.sh
+fi
+###############################################
+
+TARIH=`date +%Y-%m-%d`
+DOSYA=farkbadi-$TARIH
+
+###############################################
+# ssg++ cli calisma alani
+mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
+cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
+
+# badi dosyalarinin arsivlenme alani
+mkdir -p arsiv/badiler/mobi
+#mkdir -p arsiv/badiler/html
+#mkdir -p arsiv/badiler/html/cache
+###############################################
+
+"$JAVA" -cp $SSGPP_JAR net.sf.ssgpp.console.Shell -l yürüt başlıkfarkknk [tip=badi, dosya="$SSGPP_SCRIPTS_DIR/../ssgpp_web_workspace/cache/checkpoint-badi.xml"] ! başlıkgirdileri ! dosyabtk [dosya=$DOSYA.htm]
+
+if [ -f $DOSYA.htm ]; then
+    ebook-convert $DOSYA.htm $DOSYA.mobi
+fi
+
+if [ -f $DOSYA.mobi ]; then
+   if [ "$1" != "test" ]; then    
+	echo "mobi dosyasını gönderiyor..."
+	$SSGPP_SCRIPTS_DIR/send-file.sh $DOSYA.mobi $KINDLE_EMAIL
+# mobi dosyasini arsiv/badiler/mobi altina tasi.
+	mv $DOSYA-sentToKindle.mobi arsiv/badiler/mobi/
+	# html ve resimleri arsiv/badiler/html altina tasi.
+	#mv $DOSYA.htm arsiv/badiler/html/
+	#mv cache/* arsiv/badiler/html/cache/
+	rm $DOSYA.htm	
+	rm -rf cache
+
+	if [ -n "$UYARMA_PROGRAMI" ]; then
+		$UYARMA_PROGRAMI "badi fark mobi'si gönderildi."
+	fi
+	echo "badi fark mobi'si gönderildi."
+   else
+        echo "mobi dosyası oluşturuldu, gönderilmedi."
+   fi
+else
+   echo 'HATA: mobi oluşturulurken bir hata oluştu!'
+fi
+

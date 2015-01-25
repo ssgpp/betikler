@@ -9,6 +9,7 @@
 # - mpsyt (https://github.com/np1/mps-youtube/)
 # - ssgpp_conf.sh dosyasindaki 
 #   - ssg++ komut satiri arayuzu (SSGPP_JAR) ve onun yapilandirilmasi (~/.ssgpp/conf/app.properties)
+# - sed, iconv, tr (bash ortaminda bulunan standard programlar)
 #
 # author: oderin at users sourceforge net
 ###############################################

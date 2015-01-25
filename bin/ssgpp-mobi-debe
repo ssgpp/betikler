@@ -5,11 +5,11 @@
 # ssgpp-debe-to-kindle.sh eksi sozluk'teki dunun en begenilen entry'lerini mobi yapip kindle'a gonderir.
 # 
 # cron ile kullanmak icin:
-#    # 15 dk'da bir (xx:00, xx:15, xx:30, xx:45'lerde) gondermeye calis. Zaten gonderilmisse birsey yapmadan cikar.
-#    */15 * * * *       /opt/ssgpp-scripts/bin/ssgpp-debelen >/dev/null 2>&1
+# 15 dk'da bir (xx:00, xx:15, xx:30, xx:45'lerde) gondermeye calis. Zaten gonderilmisse birsey yapmadan cikar.
+# */15 * * * *       /opt/ssgpp-scripts/bin/ssgpp-mobi-debe >/dev/null 2>&1
 #
 # Argumanlar: 
-# - "debelen test" seklinde calistirilirsa sadece olusturulur, gonderilmez.
+# - test argumaniyla calistirilirsa sadece olusturulur, gonderilmez. orn., ssgpp-mobi-debe test
 # 
 # Gereksinimler:
 # - ssgpp_conf.sh dosyasindaki 
@@ -69,7 +69,7 @@ debe_scheduled_action() {
 	exit
     fi
 
-    # debelen test'ten sonra OK'yse debelen pass ile gonderilebilir.
+    # ssgpp-mobi-debe test'ten sonra OK'yse ssgpp-mobi-debe pass ile gonderilebilir.
     if [[ "$1" == "pass" && -f "$DOSYA.mobi" ]]; then
 	boyut=`stat -c '%s' $DOSYA.mobi`
 	if ((boyut < 6000000)); then
@@ -84,7 +84,7 @@ debe_scheduled_action() {
     fi
     
     if [ -f "$DOSYA.htm" ]; then
-	echo "debe bir önceki debelen betiğinin çalıştırılışından beri oluşturulmaya çalışılıyor (çok resim var!)."
+	echo "debe bir önceki ssgpp-mobi-debe betiğinin çalıştırılışından beri oluşturulmaya çalışılıyor (çok resim var!)."
 	exit
     fi
 
