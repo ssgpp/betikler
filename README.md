@@ -25,6 +25,7 @@ $ ssgpp-badilen
 
 ``
 $ ssg++ bugün
+
 $ ssg++ yürüt başlıkknk \[başlık=sözlükçülerin en iyi 10 dizi listesi\] ! başlıkgirdileri ! girdibkzları ! histogram ! grafikbtk
 ``
 
