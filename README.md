@@ -28,10 +28,10 @@ $ ssg++ bugün
 ``
 
 ``
-$ ssg++ yürüt başlıkknk \[başlık=sözlükçülerin en iyi 10 dizi listesi\] ! başlıkgirdileri ! girdibkzları ! histogram ! grafikbtk
+$ ssg++ yürüt başlıkknk [başlık=sözlükçülerin en iyi 10 dizi listesi] ! başlıkgirdileri ! girdibkzları ! histogram ! grafikbtk
 ``
 
-* ssg++ web arayüzü sunucusu: başlatma|kapatma|yeniden başlatma|durumunu öğrenme
+* ssg++ web arayüzü sunucusu: başlatma | kapatma | yeniden başlatma | durumunu öğrenme
 
 ``
 $ ssgppd start|stop|restart|status
