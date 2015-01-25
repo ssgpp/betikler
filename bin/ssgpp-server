@@ -1,0 +1,58 @@
+#!/bin/bash
+###############################################
+# ssg++ web arayuzunu baslatmak icin bir betik.
+# ssgppd uzerinden kullaniliyor.
+#
+# author: oderin at users sourceforge net
+###############################################
+
+
+###############################################
+# ssg++ betiklerinin oldugu klasoru bul
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+SSGPP_SCRIPTS_DIR="$DIR"
+#echo 'SSGPP_SCRIPTS_DIR:' $SSGPP_SCRIPTS_DIR
+###############################################
+
+###############################################
+# yapilandirma dosyasini oku.
+if [ -f ~/.ssgpp/conf/ssgpp_conf.sh ]; then
+	source ~/.ssgpp/conf/ssgpp_conf.sh
+else
+	source $SSGPP_SCRIPTS_DIR/ssgpp_conf.sh
+fi
+###############################################
+
+###############################################
+# ssg++ cli calisma alani
+#cd ~/kulucka/ssgpp_workspace 
+mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_web_workspace"
+cd "$SSGPP_SCRIPTS_DIR/../ssgpp_web_workspace"
+
+###############################################
+
+# if [ -z "$JAVACMD" ] ; then
+#     if [ -n "$JAVA_HOME"  ] ; then
+# 	JAVACMD="$JAVA_HOME/bin/java"
+#     else
+# 	JAVACMD="`which java`"
+#     fi
+# fi
+# # Might fail if $0 is a link
+# SSGPP_HOME=`dirname "$0"`/..
+# $JAVACMD -Xmx1024m -jar $SSGPP_HOME/ssgpp-web-1.0-SNAPSHOT.jar $@
+
+# ARTIK DOGRU DEGIL:dtd'leri indirmemek icin cd onemli.
+#cd /home/onur/kulucka/java_workspace/ssgpp.git/
+#java -cp $SSGPP_JAR net.sf.ssgpp.webui.WebServer $1
+#cd /shared/gezgin/kulucka/ssgpp_workspace/ssgpp-web-workspace
+#java -jar target/ssgpp-web-1.0-SNAPSHOT.war
+"$JAVA" -jar $SSGPP_WEB_JAR
+

@@ -1,0 +1,64 @@
+#!/bin/bash
+###############################################
+# Verilen başlıktaki youtube bağlantılarını mpsyt programında aynı isimde bir çalma listesi olarak kaydeder.
+#
+# Argumanlar:
+# - baslik, orn. ssgpp-mpsyt insanı mutlu eden şarkılar
+#
+# Gereksinimler:
+# - mpsyt (https://github.com/np1/mps-youtube/)
+# - ssgpp_conf.sh dosyasindaki 
+#   - ssg++ komut satiri arayuzu (SSGPP_JAR) ve onun yapilandirilmasi (~/.ssgpp/conf/app.properties)
+#
+# author: oderin at users sourceforge net
+###############################################
+
+###############################################
+# ssg++ betiklerinin oldugu klasoru bul
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+SSGPP_SCRIPTS_DIR="$DIR"
+#echo 'SSGPP_SCRIPTS_DIR:' $SSGPP_SCRIPTS_DIR
+###############################################
+
+###############################################
+# yapilandirma dosyasini oku.
+if [ -f ~/.ssgpp/conf/ssgpp_conf.sh ]; then
+	source ~/.ssgpp/conf/ssgpp_conf.sh
+else
+	source $SSGPP_SCRIPTS_DIR/ssgpp_conf.sh
+fi
+###############################################
+
+###############################################
+# ssg++ cli calisma alani
+#cd ~/kulucka/ssgpp_workspace 
+mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
+cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
+
+###############################################
+
+# ascii playlist name
+playlist=$(echo $@ | sed 's/ /_/g' | iconv -f utf-8 -t us-ascii//translit |  tr -cd '[[:alnum:]]._-')
+
+if [ ! -f "cache-$playlist.txt" ]; then
+    "$JAVA" -cp $CLASSPATH:$SSGPP_JAR net.sf.ssgpp.console.Shell yürüt başlıkknk [başlık=$@] ! başlıkgirdileri ! alanseçici [alan=disariBaglantilar] ! fork1x3 ! genelflt [alan=text, değer=http://www.youtube.com, benzerlik=sonuekli] \& genelflt [alan=text, değer=https://www.youtube.com, benzerlik=sonuekli] \& genelflt [alan=text, değer=http://youtu.be, benzerlik=sonuekli] ! merge3x1 ! dosyabtk [dosya=cache-$playlist.txt]
+fi
+
+sed -r 's/.*v=(([[:alnum:]]|-|_)*).*/* http:\/\/www.youtube.com\/watch\?v=\1/' "cache-$playlist.txt" | sort | uniq | grep -v 'playlist?list=' | sed 's/\*/url/g' | sed 's/$/, add 1,/' | sed ':a;N;$!ba;s/\n/ /g' > mpsyt_komut.txt
+
+#sed -r 's/.*v=(([[:alnum:]]|-|_)*).*/* http:\/\/www.youtube.com\/watch\?v=\1/' yt-urller.txt | sort | uniq | grep -v 'playlist?list=' | sed "s/\*/open $playlist, url/g" | sed "s/$/, add 1, save $playlist, rm 1-, /" | sed ':a;N;$!ba;s/\n/ /g' > mpsyt_komut.txt
+
+#rm yt-urller-$playlist.txt
+
+
+mpsyt `cat mpsyt_komut.txt` vp, save $playlist, quit
+echo $@ 'başlığı liste olarak eklendi.'
+rm mpsyt_komut.txt
+

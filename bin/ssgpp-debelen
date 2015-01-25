@@ -1,0 +1,132 @@
+#!/bin/bash
+###############################################
+# ssgpp_debe_to_kindle.sh betigini cron ile kullanabilmek icin bir wrapper.
+# online debe ile gonderilmis debe'yi kiyaslayarak gonderiyor ya da gondermiyor.
+# ssgpp_debe_to_kindle.sh eksi sozluk'teki dunun en begenilen entry'lerini mobi yapip kindle'a gonderir.
+# 
+# cron ile kullanmak icin:
+#    # 15 dk'da bir (xx:00, xx:15, xx:30, xx:45'lerde) gondermeye calis. Zaten gonderilmisse birsey yapmadan cikar.
+#    */15 * * * *       /opt/ssgpp-scripts/bin/ssgpp-debelen >/dev/null 2>&1
+#
+# Argumanlar: 
+# - "debelen test" seklinde calistirilirsa sadece olusturulur, gonderilmez.
+# 
+# Gereksinimler:
+# - ssgpp_conf.sh dosyasindaki 
+#   - kindlegen programi (KINDLEGEN_EXE)
+#   - mobi alicisi adresi (KINDLE_EMAIL)
+#   - e-mail gondermekle ilgili degiskenler (EMAIL_*), 
+#   - ssg++ komut satiri arayuzu (SSGPP_JAR) ve onun yapilandirilmasi (~/.ssgpp/conf/app.properties)
+#
+# author: oderin at users sourceforge net
+###############################################
+
+###############################################
+# ssg++ betiklerinin oldugu klasoru bul
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+SSGPP_SCRIPTS_DIR="$DIR"
+#echo 'SSGPP_SCRIPTS_DIR:' $SSGPP_SCRIPTS_DIR
+###############################################
+
+###############################################
+# yapilandirma dosyasini oku.
+if [ -f ~/.ssgpp/conf/ssgpp_conf.sh ]; then
+	source ~/.ssgpp/conf/ssgpp_conf.sh
+else
+	source $SSGPP_SCRIPTS_DIR/ssgpp_conf.sh
+fi
+###############################################
+
+source $SSGPP_SCRIPTS_DIR/ssgpp_debe_util.sh
+
+TARIH=`date +%Y-%m-%d`
+DOSYA=debe-$TARIH
+
+###############################################
+# ssg++ cli calisma alani
+#cd ~/kulucka/ssgpp_workspace 
+mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
+cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
+
+# debe dosyalarinin arsivlenme alani
+mkdir -p arsiv/debeler/mobi
+mkdir -p arsiv/debeler/html
+mkdir -p arsiv/debeler/html/cache
+###############################################
+
+
+
+debe_scheduled_action() {
+
+    if [ -f "arsiv/debeler/mobi/$DOSYA-sentToKindle.mobi" ]; then
+	echo "zaten gonderilmis."
+	exit
+    fi
+
+    # debelen test'ten sonra OK'yse debelen pass ile gonderilebilir.
+    if [[ "$1" == "pass" && -f "$DOSYA.mobi" ]]; then
+	boyut=`stat -c '%s' $DOSYA.mobi`
+	if ((boyut < 6000000)); then
+	    echo "debe olusturulmus, gonderilecek..."
+	    mobi_gonder
+	    if [ -n "$UYARMA_PROGRAMI" ]; then
+		$UYARMA_PROGRAMI "Günün debe'si gönderildi."
+	    fi
+	    echo 'Günün debesi gönderildi.'
+	    exit
+	fi
+    fi
+    
+    if [ -f "$DOSYA.htm" ]; then
+	echo "debe bir önceki debelen betiğinin çalıştırılışından beri oluşturulmaya çalışılıyor (çok resim var!)."
+	exit
+    fi
+
+    
+    # online debelerin ilk girdisine bak.
+    # başlıkgirdileri ! alanseçici [alan=id] ile basliklarin degistigi durumlarda da calisir hale geldi. birinci siradaki girdi degismedigi surece bunun calismasi lazim.
+    "$JAVA" -classpath $CLASSPATH:$SSGPP_JAR net.sf.ssgpp.console.Shell yürüt istatistikknk [tip=debe] ! limitflt [adet=1] ! başlıkgirdileri ! alanseçici [alan=id] ! dosyabtk [dosya=online-debe.txt]
+    status=$?
+    if [ $status -ne 0 ]; then
+	echo "debe indirmede hata!" >&2
+	exit
+    fi
+
+    size_onlinedebe=`stat -c %s online-debe.txt`
+    if [ $size_onlinedebe -eq 0 ]; then
+	echo "muhtemel ag sorunu; debe indirmede hata!" >&2
+	exit
+    fi
+    
+    if [ ! -f son-gonderilmis-debe.txt ]; then
+	touch son-gonderilmis-debe.txt
+    fi
+    
+    # online debeler son gonderilmis debe'den farkliysa yeni debe'yi olustur ve gonder.
+    cmp -s online-debe.txt son-gonderilmis-debe.txt > /dev/null
+    if [ $? -eq 1 ]; then
+	echo "debe olusturulup gonderilecek..."
+	source $SSGPP_SCRIPTS_DIR/ssgpp-debe-to-kindle.sh "$@" # test
+	# bu txt olusturma isi ssgpp_debe_to_kindle-v2.sh tarafindan gonderme yapildiktan sonra yapiliyor. 
+	# mv online-debe.txt son-gonderilmis-debe.txt
+	if [ -n "$UYARMA_PROGRAMI" ]; then
+		$UYARMA_PROGRAMI "Günün debe'si gönderildi."
+	fi
+	echo 'Günün debesi gönderildi.'
+    else
+	if [ -n "$UYARMA_PROGRAMI" ]; then
+		$UYARMA_PROGRAMI "Günün debe'si henüz güncellenmemiş. Tekrar dene."
+	fi
+	echo 'Günün debesi henüz güncellenmemiş. Daha sonra tekrar dene.'
+    fi
+}
+
+# main
+debe_scheduled_action "$@"

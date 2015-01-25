@@ -1,0 +1,50 @@
+#!/bin/bash
+###############################################
+# yazarin girdilerinin favorilenme sayilarindaki degisiklikleri gosterir.
+# 
+# Argumanlari: yok
+#
+# author: oderin at users sourceforge net
+###############################################
+
+###############################################
+# ssg++ betiklerinin oldugu klasoru bul
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+SSGPP_SCRIPTS_DIR="$DIR"
+#echo 'SSGPP_SCRIPTS_DIR:' $SSGPP_SCRIPTS_DIR
+###############################################
+
+###############################################
+# yapilandirma dosyasini oku.
+if [ -f ~/.ssgpp/conf/ssgpp_conf.sh ]; then
+	source ~/.ssgpp/conf/ssgpp_conf.sh
+else
+	source $SSGPP_SCRIPTS_DIR/ssgpp_conf.sh
+fi
+###############################################
+
+###############################################
+# ssg++ cli calisma alani
+#cd ~/kulucka/ssgpp_workspace 
+mkdir -p "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
+cd "$SSGPP_SCRIPTS_DIR/../ssgpp_cli_workspace"
+
+# kisisel dosyalarin arsivlenme alani
+mkdir -p arsiv/ben/favlananlari
+cd arsiv/ben/favlananlari
+###############################################
+
+"$JAVA" -cp $SSGPP_JAR net.sf.ssgpp.console.Shell -l yürüt biriknk [yazar=%%BEN%%, tip=favorilenenleri] ! başlıkgirdileri ! histogram [kategori=favorisayısı] ! dosyabtk [dosya=favorilenenler-yeni.txt]
+
+diff favorilenenler.txt favorilenenler-yeni.txt
+
+mv favorilenenler.txt favorilenenler.txt~
+mv favorilenenler-yeni.txt favorilenenler.txt
+
