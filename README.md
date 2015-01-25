@@ -4,8 +4,8 @@ ssg++'yı kullanan faydalı betikler
 ### Yapılandırma
 
  * [ssg++] (http://ssgpp.github.io/indir.html)'yı edinin. 
- * bin/ssgpp_conf.sh dosyasında belirtilen düzenlemeleri yapın.
- * bin klasörünü PATH'e ekleyin.
+ * [ssgpp_conf.sh] (https://github.com/ssgpp/betikler/blob/master/bin/ssgpp_conf.sh) dosyasında belirtilen düzenlemeleri yapın.
+ * bin klasörünü PATH'e ekleyin. örn. `export PATH=$PATH:/home/user/Downloads/ssg++-1.0/bin`
 
 ### Kullanım
 
@@ -46,7 +46,7 @@ $ ssgpp-izle-baslik "6 ağustos 2014 beşiktaş feyenoord maçı"
 $ ssgpp-izle-bugun
 ``
 
-* girdilerin favorilenme sayılarındaki değişiklikleri görme
+* yazarın girdilerinin favorilenme sayılarındaki değişiklikleri görme
 
 ``
 $ ssgpp-diff-fav
