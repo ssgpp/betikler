@@ -25,7 +25,7 @@ $ ssgpp-mobi-debe
 $ ssgpp-mobi-badi
 ``
 
-* Verilen başlığın girdilerinden mobi oluşturup kindle'a gönderme örneği
+* Verilen başlığın girdilerinden mobi oluşturup kindle'a gönderme örnekleri
 
 ``
 $ ssgpp-mobi-baslik javascript\'in ilkokullarda zorunlu ders olması
@@ -63,7 +63,7 @@ $ ssgpp-diff-fav
 ssgpp-mpsyt insanı mutlu eden şarkılar
 ``
 
-* ssg++ komut satırı arayüzünü çalıştırma örneği ([komutlarla ilgili yardım](http://ssgpp.github.io/#sec-3-2))
+* ssg++ komut satırı arayüzünü çalıştırma örnekleri ([komutlarla ilgili yardım](http://ssgpp.github.io/#sec-3-2))
 
 ``
 $ ssg++ bugün
