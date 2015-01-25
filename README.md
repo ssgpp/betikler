@@ -9,7 +9,7 @@ ssg++'yı kullanan faydalı betikler
 
 ### Kullanım
 
-* Günün DEBE mobisini kindle'a gönderme
+* Günün DEBE mobisini kindle'a gönderme ([çıktı örnekleri](http://ssgpp.github.io/mobi.html))
 
 ``
 $ ssgpp-debelen
@@ -21,7 +21,7 @@ $ ssgpp-debelen
 $ ssgpp-badilen
 ``
 
-* ssg++ komut satırı arayüzünü çalıştırma örneği
+* ssg++ komut satırı arayüzünü çalıştırma örneği ([komutlarla ilgili yardım](http://ssgpp.github.io/#sec-3-2))
 
 ``
 $ ssg++ bugün
