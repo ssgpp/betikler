@@ -3,7 +3,7 @@ ssg++'yı kullanan faydalı betikler
 
 Her ne kadar ssg++ ile tek bir satırda pek çok iş yapılabiliyor olsa da, tek satırın yetmediği ya da başka programlarla bir arada kullanılmasının gerektiği durumlarda betik oluşturmak gerekiyor. Bu alanda farklı amaçlar için yazılmış bazı betikleri bulabilirsiniz.
 
-Bu alana kendi betiklerinizle katkıda bulunabilirsiniz. Özellikle mevcut betiklerin Windows karşılıklarına ihtiyaç var.
+Windows kullanıcıları betikleri bu halleriyle [Cygwin](https://www.cygwin.com/) altında kullanabilir. 
 
 ### Yapılandırma
 

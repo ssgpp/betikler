@@ -16,6 +16,7 @@ KINDLEGEN_EXE=kindlegen
 
 ###############################################
 # 3. calibre'nin calibre-smtp, ebook-convert programlarini iceren klasor PATH'de degilse eklenmeli
+# indirmek icin: http://calibre-ebook.com/download
 # export PATH=$PATH:~/calibre-bin/calibre
 
 
