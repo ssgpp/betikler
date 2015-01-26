@@ -60,7 +60,7 @@ if [ -f $DOSYA.mobi ]; then
    if [ "$1" != "test" ]; then    
 	echo "mobi dosyasını gönderiyor..."
 	$SSGPP_SCRIPTS_DIR/send-file.sh $DOSYA.mobi $KINDLE_EMAIL
-# mobi dosyasini arsiv/badiler/mobi altina tasi.
+	# mobi dosyasini arsiv/badiler/mobi altina tasi.
 	mv $DOSYA-sentToKindle.mobi arsiv/badiler/mobi/
 	# html ve resimleri arsiv/badiler/html altina tasi.
 	#mv $DOSYA.htm arsiv/badiler/html/

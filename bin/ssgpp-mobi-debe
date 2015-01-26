@@ -91,7 +91,7 @@ debe_scheduled_action() {
     
     # online debelerin ilk girdisine bak.
     # başlıkgirdileri ! alanseçici [alan=id] ile basliklarin degistigi durumlarda da calisir hale geldi. birinci siradaki girdi degismedigi surece bunun calismasi lazim.
-    "$JAVA" -classpath $CLASSPATH:$SSGPP_JAR net.sf.ssgpp.console.Shell yürüt istatistikknk [tip=debe] ! limitflt [adet=1] ! başlıkgirdileri ! alanseçici [alan=id] ! dosyabtk [dosya=online-debe.txt]
+    "$JAVA" -classpath $SSGPP_JAR net.sf.ssgpp.console.Shell yürüt istatistikknk [tip=debe] ! limitflt [adet=1] ! başlıkgirdileri ! alanseçici [alan=id] ! dosyabtk [dosya=online-debe.txt]
     status=$?
     if [ $status -ne 0 ]; then
 	echo "debe indirmede hata!" >&2
